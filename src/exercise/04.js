@@ -2,10 +2,10 @@
 // http://localhost:3000/isolated/exercise/04.js
 
 import * as React from 'react'
-
+const getLocalBoardState = () => JSON.parse(window.localStorage.getItem('boardState')) || Array(9).fill(null)
 function Board() {
   // 🐨 squares is the state for this component. Add useState for squares
-  const [squares, setSquares] = React.useState(Array(9).fill(null))
+  const [squares, setSquares] = React.useState(getLocalBoardState)
   // 🐨 We'll need the following bits of derived state:
   // - nextValue ('X' or 'O')
   // - winner ('X', 'O', or null)
@@ -51,6 +51,10 @@ function Board() {
       </button>
     )
   }
+
+  React.useEffect( () => {
+    window.localStorage.setItem('boardState', JSON.stringify([...squares]))
+  }, [squares])
 
   return (
     <div>

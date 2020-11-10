@@ -25,6 +25,7 @@ function PokemonInfo({pokemonName}) {
   //   3. pokemon: <PokemonDataView pokemon={pokemon} />
 
   const [pokemon, setPokemon] = React.useState(null)
+  const [ error, setError ] = React.useState(false)
 
   React.useEffect( () => {
     if(!pokemonName) return
@@ -33,10 +34,16 @@ function PokemonInfo({pokemonName}) {
       .then( pokemonData => {
           setPokemon(pokemonData)
         }
-      )
+      ).catch( err => setError(true))
   }, [pokemonName])
 
   if(!pokemonName) return <p>Submit a pokemon name</p>
+
+  if(error) return (
+    <div role="alert">
+      There was an error: <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+    </div>
+  )
 
   return pokemon
   ? <PokemonDataView pokemon={pokemon} />
